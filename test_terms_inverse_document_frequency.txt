@@ -1,0 +1,6 @@
+6185384
+Wireless Network System with Autonomous Antenna Actuator Control for Disaster Information
+In Japan, there have been a number of serious natural disasters such as earthquakes, tsunami, as represented by the East Japan Great Earthquake in 2011.
+5718383
+A Software Size Estimation Method Based on Improved FPA
+Software size estimation is the key of entire software program project, and the accurate estimation immediately affect the success of project.
