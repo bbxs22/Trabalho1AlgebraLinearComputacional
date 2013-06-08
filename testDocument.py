@@ -48,11 +48,14 @@ class TestDocumentMethods(unittest.TestCase):
         terms_freq = document.terms_frequency()
         
         terms = ['novel', 'techniqu', 'optimis', 'harmon', 'reactiv', 'power', 'nonsinusoid', 'voltag', 'condit']
-        self.assertEquals(terms_freq.keys().sort(), terms.sort())
+        terms.sort()
+        terms_freq_keys = terms_freq.keys()
+        terms_freq_keys.sort()
+        self.assertEqual(terms_freq_keys, terms)
         
         for term in terms:
-            self.assertEquals(type(terms_freq[term]), float)
-            self.assertEquals(terms_freq[term], 1.0/9.0)
+            self.assertEqual(type(terms_freq[term]), float)
+            self.assertEqual(terms_freq[term], 1.0/9.0)
         
 
 if __name__ == '__main__':
