@@ -55,8 +55,15 @@ class TestDocumentMethods(unittest.TestCase):
         
         for term in terms:
             self.assertEqual(type(terms_freq[term]), float)
-            self.assertEqual(terms_freq[term], 1.0/9.0)
-        
+            self.assertAlmostEqual(terms_freq[term], 1.0/9.0, delta=0.000001)
+            
+    def test_terms_frequency(self):
+        document = Document('123', '', 'A novel technique for optimising the harmonics and reactive power under nonsinusoidal voltage conditions.')
+        document.calculate_terms_frequency()
+        self.assertEqual(type(document.terms_frequency()), dict)
+        self.assertEqual(type(document.terms_frequency('term')), float)
+        self.assertAlmostEqual(document.terms_frequency('novel'), 1.0/9.0, delta=0.000001)
+        self.assertAlmostEqual(document.terms_frequency('harmony'), 0.0, delta=0.000001)
 
 if __name__ == '__main__':
     unittest.main()

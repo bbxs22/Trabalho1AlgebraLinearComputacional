@@ -103,9 +103,15 @@ class Document:
         for term in self.terms():
             self.__terms_frequency[term] /= total_terms
             
-    def terms_frequency(self):
+    def terms_frequency(self, term=None):
         '''
-        Frequencia de cada termo na sentenca
-        @return dict<str, float>
+        Frequencia de cada termo na sentenca ou a frequencia do termo informado
+        @param str (optional)
+        @return dict<str, float>/float
         '''
-        return self.__terms_frequency
+        if term == None:
+            return self.__terms_frequency
+        if self.__terms_frequency.has_key(term):
+            return self.__terms_frequency[term]
+        else:
+            return 0.0
