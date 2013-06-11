@@ -90,7 +90,11 @@ class TestMatrix(unittest.TestCase):
         self.assertAlmostEqual(matrix2.get(0, 1), 3.0, delta=0.000001)
         self.assertAlmostEqual(matrix2.get(1, 0), 2.0, delta=0.000001)
         self.assertAlmostEqual(matrix2.get(1, 1), 4.0, delta=0.000001)
-                    
+        
+    def test_norm(self):
+        vector = Matrix([4, 3, 2, 5], 2, 2)
+        self.assertAlmostEqual(vector.norm(), math.sqrt(4**2+3**2+2**2+5**2), delta=0.000001)
+
     def test_sub(self):
         matrix = Matrix([4, 3, 2, 2, 1, 0, 9, 7, 2, -1], 2, 5)
         matrix2 = Matrix.ones(2, 5)

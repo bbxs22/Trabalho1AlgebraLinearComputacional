@@ -54,9 +54,12 @@ class Matrix:
                 matrix.set(j, i, self.get(i, j))
         return matrix
         
+    def norm(self):
+        return math.sqrt(sum(map(lambda x: x**2, self.__values)))
+        
     def __sub__(self, matrix):
         if (self.rows() != matrix.rows() or self.columns() != matrix.columns()):
-            raise ValueError('Mult error')
+            raise ValueError('Sub error')
             
         result = self.copy()
         for i in xrange(self.rows()):
