@@ -83,5 +83,14 @@ class Matrix:
             for i in xrange(self.rows()):
                 for k in xrange(matrix.columns()):
                     for j in xrange(self.columns()):
-                            result.set(i, k, result.get(i, k) + self.get(i, j) * matrix.get(j, k));
+                            result.set(i, k, result.get(i, k) + self.get(i, j) * matrix.get(j, k))
             return result
+            
+    def __repr__(self):
+        matrix = ''
+        for i in xrange(self.rows()):
+            for j in xrange(self.columns()):
+                matrix += str(self.get(i, j)) + ' '
+            matrix += '\n'
+        return matrix
+            
