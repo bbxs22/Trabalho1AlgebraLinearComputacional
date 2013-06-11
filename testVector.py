@@ -68,10 +68,23 @@ class TestVector(unittest.TestCase):
         self.assertAlmostEqual(vector.get(2), 2.0, delta=0.000001)
         self.assertAlmostEqual(vector2.get(2), 10.0, delta=0.000001)
         
+    def test_norm(self):
+        vector = Vector([4, 3, 2])
+        self.assertAlmostEqual(vector.norm(), math.sqrt(4**2+3**2+2**2), delta=0.000001)
+        
     def test_dot_product(self):
         vector = Vector([4, 3, 2], False)
         vector2 = Vector([4, 3, 2])
         self.assertAlmostEqual(vector.dot_product(vector2), math.sqrt(29.0), delta=0.000001)
+        
+    def test_sub(self):
+        vector1 = Vector([4, 3, 2])
+        vector2 = Vector([2, 3, 4])
+        vector3 = vector1 - vector2
+        
+        self.assertAlmostEqual(vector3.get(0), 2.0, delta=0.000001)
+        self.assertAlmostEqual(vector3.get(1), 0.0, delta=0.000001)
+        self.assertAlmostEqual(vector3.get(2), -2.0, delta=0.000001)
         
     def test_mul_between_vectors(self):
         vector = Vector([1, 2, 3])

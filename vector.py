@@ -32,6 +32,9 @@ class Vector:
     def transpose(self):
         return Vector(self.__values[:], (True if self.rows() == 1 else False))
         
+    def norm(self):
+        return math.sqrt(sum(map(lambda x: x**2, self.__values)))
+        
     def dot_product(self, vector):
         if self.columns() != vector.rows():
             raise ValueError('Dot product error')
@@ -40,6 +43,15 @@ class Vector:
         for j in xrange(0, self.columns()):
             result += self.get(j) * vector.get(j)
         return math.sqrt(result)
+        
+    def __sub__(self, value):
+        if (self.rows() != value.rows() or self.columns() != value.columns()):
+            raise ValueError('Sub error')
+            
+        result = self.copy()
+        for i in xrange(self.rows()):
+            result.set(i, result.get(i) - value.get(i))
+        return result
         
     def __rmul__(self, value):
         if (type(value) == int or type(value) == float):
@@ -66,3 +78,9 @@ class Vector:
                 for j in xrange(result.columns()):
                     result.set(i, j, self.get(i) * vector.get(j))
             return result
+
+    def __repr__(self):
+        string = ''
+        for i in xrange(max(self.rows(), self.columns())):
+            string += str(self.get(i)) + ' '
+        return string
