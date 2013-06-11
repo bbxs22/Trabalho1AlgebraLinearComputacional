@@ -16,7 +16,7 @@ class QR:
         
         # calcula sin e cos
         a = matrix.get(row, column)
-        b = matrix.get(row+1, column)
+        b = matrix.get(row, column+1)
         cos_theta = a / math.sqrt(a * a + b * b)
         sin_theta = b / math.sqrt(a * a + b * b)
         
