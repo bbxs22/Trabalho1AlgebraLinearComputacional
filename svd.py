@@ -47,9 +47,43 @@ class SVD:
             
         return query_vector
         
+    def calculate_score_cosine(self, query_vector, matrix):
+        '''
+        Recupera o vetor de score usando co-seno
+        @param Vector
+        @param Matrix
+        @return Vector
+        '''
+        product = 0.0
+        xsLengthSquared = 0.0;
+        ysLengthSquared = 0.0;
+        
+        # recupera os vetores-linha da matriz
+        vectors = self.get_row_vectors(matrix)
+            
+        # ajusta o score de 0 para cada um dos termos
+        scores = Vector([0.0] * len(vectors))
+            
+        # calcula o score para cada elemento de vector
+        s = 0
+        for vector in vectors:
+            for i in xrange(query_vector.columns()):
+                sqrtScale = math.sqrt(self.score_vector.get(i))
+                scaledXs = sqrtScale * query_vector.get(i);
+                scaledYs = sqrtScale * vector.get(i);
+                
+                xsLengthSquared += scaledXs * scaledXs
+                ysLengthSquared += scaledYs * scaledYs
+                product += scaledXs * scaledYs
+                
+            scores.set(s, product / math.sqrt(xsLengthSquared * ysLengthSquared))
+            s = s + 1 
+        
+        return scores
+    
     def calculate_score(self, query_vector, matrix):
         '''
-        Recupera o vetor de score
+        Recupera o vetor de score usando produto interno
         @param Vector
         @param Matrix
         @return Vector
