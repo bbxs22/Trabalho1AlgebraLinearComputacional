@@ -1,4 +1,5 @@
 import math
+from vector import *
 
 class Matrix:
     
@@ -56,6 +57,13 @@ class Matrix:
         
     def norm(self):
         return math.sqrt(sum(map(lambda x: x**2, self.__values)))
+        
+    def get_row(self, index):
+        start_position = index * self.columns()
+        end_position = start_position + self.columns()
+        if start_position < 0 or end_position > self.rows() * self.columns():
+            raise ValueError('Invalid row')
+        return Vector(self.__values[start_position : end_position], False)
         
     def __sub__(self, matrix):
         if (self.rows() != matrix.rows() or self.columns() != matrix.columns()):

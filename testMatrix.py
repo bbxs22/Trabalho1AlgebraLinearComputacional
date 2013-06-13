@@ -136,6 +136,14 @@ class TestMatrix(unittest.TestCase):
         self.assertAlmostEqual(result.get(0, 1), 24.0, delta=0.000001)
         self.assertAlmostEqual(result.get(1, 0), 3.0, delta=0.000001)
         self.assertAlmostEqual(result.get(1, 1), -3.0, delta=0.000001)
+        
+    def test_get_row(self):
+        matrix = Matrix([3, 8, 1, -1], 2, 2)
+        row_vector = matrix.get_row(1)
+        self.assertEqual(row_vector.rows(), 1)
+        self.assertEqual(row_vector.columns(), 2)
+        self.assertAlmostEqual(row_vector.get(0), 1.0, delta=0.000001)
+        self.assertAlmostEqual(row_vector.get(1), -1.0, delta=0.000001)
 
 
 if __name__ == '__main__':
