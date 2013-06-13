@@ -1,0 +1,27 @@
+0
+Frase 1
+Human machine interface for Lab ABC computer applications
+1
+Frase 2
+A survey of user opinion of computer system response time
+2
+Frase 3
+The EPS user interface management system
+3
+Frase 4
+System and human system engineering testing of EPS
+4
+Frase 5
+Relation of user-perceived response time to error measurement
+5
+Frase 6
+The generation of random, binary, unordered trees
+6
+Frase 7
+The intersection graph of paths in trees
+7
+Frase 8
+Graph minors IV Widths of trees and well-quasi-ordering
+8
+Frase 9
+Graph minors A survey
