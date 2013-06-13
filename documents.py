@@ -14,11 +14,14 @@ class Documents:
         for i in xrange(0, len(lines), 3):
             document = Document(lines[i], lines[i+1], lines[i+2])
             self.__documents.append(document)
+        self.__documents.sort(lambda x, y: int(x.id) - int(y.id))
             
         # cria conjunto de termos dos documentos
         self.__terms = set()
         for document in self.documents():
             self.__terms = self.__terms.union(document.terms())
+        self.__terms = list(self.__terms)
+        self.__terms.sort()
 
     def documents(self):
         '''
@@ -30,7 +33,7 @@ class Documents:
     def terms(self):
         '''
         Termos de todos os documentos
-        @return set<str>
+        @return list<str>
         '''
         return self.__terms
         
@@ -62,3 +65,20 @@ class Documents:
             return self.__inverse_document_frequency[term]
         else:
             return float("inf")
+
+    def find_terms(self, terms):
+        '''
+        Encontra a posicao do termo na lista de termos
+        @return int
+        '''
+        # trata o termo
+        terms = Document.prepare(terms)
+        
+        # encontra a posicao para cada termo
+        positions = list()
+        for term in terms:
+            try:
+                positions.append(self.terms().index(term))
+            except:
+                positions.append(-1)
+        return positions

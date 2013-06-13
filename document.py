@@ -77,7 +77,7 @@ class Document:
         self.id = id.strip()
         self.title = title.strip()
         self.text = text.strip()
-        self.__terms = Document.prepare(self.title + ' ' + self.text)
+        self.__terms = Document.prepare(self.text)
         
     def terms(self):
         '''
