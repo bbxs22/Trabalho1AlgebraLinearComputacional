@@ -1,5 +1,5 @@
 import math
-from matrix import Matrix
+from matrix import *
 
 class Vector:
     
@@ -40,16 +40,25 @@ class Vector:
             raise ValueError('Dot product error')
             
         result = 0
-        for j in xrange(0, self.columns()):
+        for j in xrange(self.columns()):
             result += self.get(j) * vector.get(j)
-        return math.sqrt(result)
+        return result
+        
+    def __add__(self, value):
+        if (self.rows() != value.rows() or self.columns() != value.columns()):
+            raise ValueError('Add error')
+            
+        result = self.copy()
+        for i in xrange(max(self.rows(), self.columns())):
+            result.set(i, result.get(i) + value.get(i))
+        return result
         
     def __sub__(self, value):
         if (self.rows() != value.rows() or self.columns() != value.columns()):
             raise ValueError('Sub error')
             
         result = self.copy()
-        for i in xrange(self.rows()):
+        for i in xrange(max(self.rows(), self.columns())):
             result.set(i, result.get(i) - value.get(i))
         return result
         
