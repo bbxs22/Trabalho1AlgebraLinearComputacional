@@ -1,6 +1,7 @@
 from documents import *
 from document import *
 from matrix import *
+import properties
 
 def main(file_name):
     
@@ -28,11 +29,14 @@ def main(file_name):
     for term in list_terms:
         j = 0
         for document in list_documents:
-            # TF * IDF
             tf = document.terms_frequency(term)
-            #idf = documents.inverse_document_frequency(term)
-            #matrix.set(i, j, tf * idf)
             matrix.set(i, j, tf)
+            
+            # TF * IDF
+            if (properties.frequency == 'tfidf'):
+                idf = documents.inverse_document_frequency(term)
+                matrix.set(i, j, tf * idf)
+                
             j = j + 1
         i = i + 1
     
@@ -44,7 +48,7 @@ def main(file_name):
     #file.close()
     
     # expoe a matrix num arquivo
-    file = open('matlab/matrix.txt', 'w')
+    file = open(properties.matlab_file, 'w')
     file.write(str(matrix.rows()))
     file.write('\n')
     file.write(str(matrix.columns()))
@@ -53,4 +57,4 @@ def main(file_name):
     file.close()
 
 if __name__ == '__main__':
-    main('example.txt')
+    main(properties.input_file)

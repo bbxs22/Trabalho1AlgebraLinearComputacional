@@ -1,10 +1,11 @@
 from matrix import *
+import properties
 
 class SVD:
 
-    MATLAB_U = 'matlab/u.txt'
-    MATLAB_S = 'matlab/s.txt'
-    MATLAB_V = 'matlab/v.txt'
+    MATLAB_U = properties.matlab_output_u
+    MATLAB_S = properties.matlab_output_s
+    MATLAB_V = properties.matlab_output_v
 
     @staticmethod
     def read_matrix(file_name):
@@ -80,8 +81,8 @@ class SVD:
             s = s + 1 
         
         return scores
-    
-    def calculate_score(self, query_vector, matrix):
+        
+    def calculate_score_dot(self, query_vector, matrix):
         '''
         Recupera o vetor de score usando produto interno
         @param Vector
@@ -103,6 +104,19 @@ class SVD:
             s = s + 1 
         
         return scores
+    
+    def calculate_score(self, query_vector, matrix):
+        '''
+        Recupera o vetor de score
+        @param Vector
+        @param Matrix
+        @return Vector
+        '''
+        if properties.score == 'cosine':
+            return self.calculate_score_cosine(query_vector, matrix)
+        
+        if properties.score == 'dot':
+            return self.calculate_score_dot(query_vector, matrix)
         
     def get_row_vectors(self, matrix):
         '''

@@ -1,5 +1,6 @@
 import string
 from stemming.porter2 import stem
+import properties
 
 class Document:
 
@@ -98,10 +99,11 @@ class Document:
         for term in self.terms():
             self.__terms_frequency[term] += 1
         
-        # frequencia do termo no documento
-        total_terms = len(self.terms())
-        for term in self.terms():
-            self.__terms_frequency[term] /= total_terms
+        if (properties.frequency == 'tfidf'):
+            # frequencia do termo no documento
+            total_terms = len(self.terms())
+            for term in self.terms():
+                self.__terms_frequency[term] /= total_terms
             
     def terms_frequency(self, term=None):
         '''

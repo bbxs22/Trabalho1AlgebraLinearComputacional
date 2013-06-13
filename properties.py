@@ -1,0 +1,8 @@
+input_file='matlab-exemplo1/example.txt'
+matlab_file='matlab-exemplo1/matrix.txt'
+matlab_output_s='matlab-exemplo1/s.txt'
+matlab_output_u='matlab-exemplo1/u.txt'
+matlab_output_v='matlab-exemplo1/v.txt'
+find_terms='human user'
+frequency=''
+score='dot'

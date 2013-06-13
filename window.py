@@ -1,6 +1,7 @@
 from Tkinter import *
 from documents import *
 from svd import *
+import properties
 
 class DocumentVO:
     
@@ -165,6 +166,6 @@ class App:
     
 root = Tk()
 root.title('Trabalho Algebra Linear')
-app = App(root, Controller('example.txt'))
+app = App(root, Controller(properties.input_file))
 root.mainloop()
 
