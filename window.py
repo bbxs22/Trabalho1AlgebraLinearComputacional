@@ -66,6 +66,9 @@ class Controller:
         for document in documents:
             self.list_docs.append(DocumentVO(i, document.title, document.text, doc_score.get(i)))
             i = i + 1
+            
+        # ordenar lista
+        #self.list_docs = sorted(self.list_docs, key=lambda x, y : x.score > y.score)
         
     def document(self, text):
         # posicao na lista
@@ -126,20 +129,18 @@ class App:
         
     def create_document_info_area(self, parent):
         self.document_label = StringVar()
-        label = Label(parent, textvariable=self.document_label)
+        label = Label(parent, textvariable=self.document_label, wraplength=500, anchor=W, justify=LEFT)
         label.pack(side=TOP)
         
         bottom_frame = Frame(parent)
         bottom_frame.pack(side=BOTTOM)
         
         scroll = Scrollbar(bottom_frame)
-        #scroll = Scrollbar(parent)
         scroll.pack(side=RIGHT, fill=BOTH)
         
-        self.document_text = Text(bottom_frame, width=50, background='white')
-        #self.document_text = Text(parent, background='white', state=DISABLED)
+        self.document_text = Text(bottom_frame, background='white')
         self.document_text.configure(yscrollcommand=scroll.set)
-        self.document_text.pack(side=LEFT)
+        self.document_text.pack(side=LEFT, fill=BOTH)
         
     def select_document(self, event):
         widget = event.widget
@@ -166,6 +167,9 @@ class App:
     
 root = Tk()
 root.title('Trabalho Algebra Linear')
+root.minsize(400,400)
+root.maxsize(800,600)
+root.geometry("800x600")
 app = App(root, Controller(properties.input_file))
 root.mainloop()
 
