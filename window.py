@@ -1,4 +1,7 @@
-from Tkinter import *
+import pygtk
+pygtk.require('2.0')
+import gtk
+import gtk.glade
 from documents import *
 from svd import *
 import properties
@@ -10,9 +13,9 @@ class DocumentVO:
         self.title = title
         self.text = text
         self.score = score
-        self.special_title = str(self.index) + '. ' + self.title
-        if (score != None):
-            self.special_title += '\n [SCORE = ' + str(self.score) + ']'
+        
+    def get_values(self):
+        return [self.index, self.score, self.title]
 
 class Controller:
     
@@ -30,7 +33,7 @@ class Controller:
         documents = self.documents.documents()
         i, self.list_docs = 0, list()
         for document in documents:
-            self.list_docs.append(DocumentVO(i, document.title, document.text, None))
+            self.list_docs.append(DocumentVO(i, document.title, document.text, 0.0))
             i = i + 1
         
     def search(self, text):
@@ -66,110 +69,129 @@ class Controller:
         for document in documents:
             self.list_docs.append(DocumentVO(i, document.title, document.text, doc_score.get(i)))
             i = i + 1
-            
-        # ordenar lista
-        #self.list_docs = sorted(self.list_docs, key=lambda x, y : x.score > y.score)
-        
-    def document(self, text):
+                    
+    def document(self, position):
         # posicao na lista
-        position = int(text.split('.')[0])
         return self.list_docs[position]
         
     def list_documents(self):
         return self.list_docs
 
-class App:
+class MainWindowGTK:
 
-    def __init__(self, root, controller):
+    COLUMNS = [(0, 'Id'), (1, 'Score'), (2, 'Titulo')]
+
+    def __init__(self, controller):
         self.controller = controller
         
-        self.main_frame = Frame(root)
-        self.main_frame.pack()
+        filename = "main_window.glade"
+        self.builder = gtk.Builder()
+        self.builder.add_from_file(filename)
+        self.builder.connect_signals(self)
+        
+        self.__prepare_main_window()
+        self.__prepare_search_entry()
+        self.__prepare_search_button()
+        self.__prepare_document_title_label()
+        self.__prepare_document_text_label()
+        self.__prepare_documents_treeview()
+        
+        self.__prepare_properties_window()
+        
+    def __prepare_main_window(self):
+        '''
+        Prepara main_window
+        Conecta evento de 'destroy'
+        '''
+        self.window = self.builder.get_object("main_window")
+        if (self.window):
+            self.window.connect("destroy", gtk.main_quit)
+            
+    def hello(self, widget):
+        print "HELLO"
+            
+    def __prepare_search_entry(self):
+        '''
+        Prepara search_entry
+        '''        
+        self.search_entry = self.builder.get_object("search_entry")
+        
+    def __prepare_search_button(self):
+        '''
+        Prepara search_button
+        Conecta evento de 'clicked'
+        '''
+        self.search_button = self.builder.get_object("search_button")
+        if (self.search_button):
+            self.search_button.connect("clicked", self.search)
 
-        frame_right = Frame(self.main_frame)
-        frame_right.pack(side=RIGHT, fill=BOTH)
+    def __prepare_document_title_label(self):
+        '''
+        Prepara document_title_label
+        '''
+        self.document_title_label = self.builder.get_object("document_title_label")
 
-        frame_left = Frame(self.main_frame)
-        frame_left.pack(side=LEFT, fill=BOTH)
+            
+    def __prepare_document_text_label(self):
+        '''
+        Prepara document_text_label
+        '''
+        self.document_text_label = self.builder.get_object("document_text_label")
         
-        self.create_documents_area(frame_right)
-        self.create_document_info_area(frame_left)
-        
-    def create_documents_area(self, parent):
-        top_frame = Frame(parent)
-        top_frame.pack(side=TOP)
-        
-        bottom_frame = Frame(parent, padx=15, pady=15)
-        bottom_frame.pack(side=BOTTOM)
-        
-        label = Label(top_frame, text='Documentos')
-        label.pack(side=TOP)
-        
-        help_frame = Frame(top_frame)
-        help_frame.pack(side=BOTTOM, fill=BOTH)
-        
-        scroll = Scrollbar(help_frame)
-        scroll.pack(side=RIGHT, fill=BOTH)
+    def __prepare_documents_treeview(self):
+        '''
+        Prepara documents_treeView
+        '''
+        self.documents_list = gtk.ListStore(int, float, str)
+        self.documents_view = self.builder.get_object("documents_treeview")
+        if (self.documents_view):
+            self.documents_view.set_model(self.documents_list)
+            self.documents_view.connect("row-activated", self.select)
 
-        self.documents_list = Listbox(help_frame, yscrollcommand=scroll.set, width=34)
-        self.documents_list.bind('<<ListboxSelect>>', self.select_document)
+        # prepara colunas
+        for column_id, column_title in MainWindowGTK.COLUMNS:
+            column = gtk.TreeViewColumn(column_title, gtk.CellRendererText(), text=column_id)
+            column.set_resizable(True)
+            column.set_sort_column_id(column_id)
+            self.documents_view.append_column(column)
+            
+        # inicializa
+        self.load_documents()
         
+    def __prepare_properties_window(self):
+        '''
+        Prepara properties_window
+        Conecta evento de 'destroy'
+        '''
+        self.properties_window = self.builder.get_object("properties_window")
+        if (self.properties_window):
+            self.properties_window.connect("destroy", gtk.main_quit)
+        
+    def load_documents(self):
+        '''
+        Carrega os documentos da documents_treeView
+        '''
+        self.documents_list.clear()
         for document in self.controller.list_documents():
-           self.documents_list.insert(END, document.special_title)
-
-        self.documents_list.pack(side=LEFT, fill=BOTH)
-        scroll.config(command=self.documents_list.yview)
+            self.documents_list.append(document.get_values())
+            
+    def select(self, widget, path, view_column):
+        model, iter = widget.get_selection().get_selected()
+        document_id = model.get_value(iter, 0)
+        document = self.controller.document(document_id)
         
-        self.search_entry = StringVar()
-        entry = Entry(bottom_frame, bd=5, width=30, textvariable=self.search_entry)
-        entry.pack(side=LEFT)
-
-        self.search_button = Button(bottom_frame, text="OK", command=self.search_action)
-        self.search_button.pack(side=RIGHT)
+        self.document_title_label.set_text(document.title)
+        self.document_text_label.set_text(document.text)
         
-    def create_document_info_area(self, parent):
-        self.document_label = StringVar()
-        label = Label(parent, textvariable=self.document_label, wraplength=500, anchor=W, justify=LEFT)
-        label.pack(side=TOP)
-        
-        bottom_frame = Frame(parent)
-        bottom_frame.pack(side=BOTTOM)
-        
-        scroll = Scrollbar(bottom_frame)
-        scroll.pack(side=RIGHT, fill=BOTH)
-        
-        self.document_text = Text(bottom_frame, background='white')
-        self.document_text.configure(yscrollcommand=scroll.set)
-        self.document_text.pack(side=LEFT, fill=BOTH)
-        
-    def select_document(self, event):
-        widget = event.widget
-        index = int(widget.curselection()[0])
-        value = widget.get(index)
-        
-        document = self.controller.document(value)
-        
-        self.document_label.set(document.special_title)
-        self.document_text.delete('1.0', '2.0')
-        self.document_text.insert(END, document.text)
-        
-    def search_action(self):
-        text = self.search_entry.get().strip()
+    def search(self, widget):
+        text = self.search_entry.get_text().strip()
         if text == '':
             self.controller.reset()
         else:
             self.controller.search(text)
         
-        self.documents_list.delete(0, len(self.controller.list_documents()))
-        
-        for document in self.controller.list_documents():
-           self.documents_list.insert(END, document.special_title)
-    
-root = Tk()
-root.title('Trabalho Algebra Linear')
-root.minsize(400,400)
-root.maxsize(800,600)
-root.geometry("800x600")
-app = App(root, Controller(properties.input_file))
-root.mainloop()
+        self.load_documents()
 
+if __name__ == "__main__":
+    hwg = MainWindowGTK(Controller(properties.input_file))
+    gtk.main()
