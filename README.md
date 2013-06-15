@@ -8,6 +8,58 @@ O projeto foi desenvolvido na linguagem [Python 2.7](http://www.python.org/downl
 [PyGTK](http://www.pygtk.org/) para a construção da interface. A base de dados dos documentos aqui apresentada foi construída com auxílio de um script 
 em PHP e apresenta abstracts de artigos disponíveis em [IEEE](http://ieeexplore.ieee.org/Xplore/home.jsp).
 
+#Introdução
+O projeto se dividiu em quatro etapas principais:
+
+1. Busca de documentos
+2. Tratamento dos documentos
+3. Montagem da matriz de dados para consulta
+4. Consulta sobre a matriz de dados
+
+#Busca dos documentos
+Para se criar uma base de dados, utilizamos um script PHP. Com ele foi possível capturar informações de artigos (em [IEEE](http://ieeexplore.ieee.org/Xplore/home.jsp)),
+como título e abstract.
+Esta base então é construída num arquivo com a seguinte estrutura:
+
+IDENTIFICADOR_DO_ARTIGO
+TITULO_DO_ARTIGO
+ABSTRACT_DO_ARTGO
+
+Exemplo:
+6185384
+Wireless Network System with Autonomous Antenna Actuator Control for Disaster Information
+In Japan, there have been a number of serious natural disasters such as earthquakes, tsunami, as represented by the East Japan Great...
+1185384
+A novel technique for optimising the harmonics and reactive power under nonsinusoidal voltage conditions
+The conventional power factor correction techniques assume the voltage source to be purely sinusoidal. But this is rarely true because...
+6325384
+Picosecond laser machining in the bulk of transparent dielectrics: Critical comparison with fs-laser direct writing
+Picosecond lasers for bulk machining of transparent dielectrics are assessed as an alternative to fs-lasers. Nanogratings and...
+6315384
+Verification of automotive control applications using S-TaLiRo
+S-TALIRO is a software toolbox that performs stochastic search for system trajectories that falsify realtime temporal logic specifications...
+6315383
+A high gain observer for enclosed mass estimation in a spark ignited engine
+A high gain non linear observer is implemented to estimate the enclosed mass in the combustion chamber of a spark ignited engine. The observer...
+5718383
+A Software Size Estimation Method Based on Improved FPA
+Software size estimation is the key of entire software program project, and the accurate estimation immediately affect the success of project...
+5718384
+Classification of Software Defect Detected by Black-Box Testing: An Empirical Study
+Software defects which are detected by black box testing (called black-box defect) are very large due to the wide use of black-box testing, but...
+
+#Tratamento dos documentos
+Para o desenvolvimento da aplicação, é necessário também realizar um tratamento nos dados coletados. Isso inclui:
+
+1. Separação do texto em palavras (termos)
+2. Redução das palavras ao seu radical (técnica como [stemming](http://en.wikipedia.org/wiki/Stemming))
+3. Remoção de palavras que não agregam informação ao texto, como artigos, preposições e advérbios.
+
+Quanto à redução, foi utilizada a biblioteca [stemming](https://bitbucket.org/mchaput/stemming) do Python. Já a identificação das chamadas stop words foi 
+baseada na [lista de Armand Brahaj](http://norm.al/2009/04/14/list-of-english-stop-words/).
+
+#Montagem da matriz de dados para consulta
+
 #Latent semantic analysis (LSA)
 Técnica utilizada para analisar relacionamento entre conjuntos de documentos e seus termos. Para isso, uma matriz contendo a contagem de palavras por
 documento é construída e a técnica, conhecida como Decomposição em Valores Singulares (SVD - Singular Value Decomposition) é utilizada a fim de reduzir
