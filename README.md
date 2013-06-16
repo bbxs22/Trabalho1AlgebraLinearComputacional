@@ -1,14 +1,14 @@
-#Projeto
-O objetivo do trabalho È a utilizaÁ„o da ¡lgebra Linear para a soluÁ„o de um problema pr·tico.
-Para isso, contruimos uma aplicaÁ„o que È capaz de realizar uma consulta numa base de dados de documentos e assim retornar aqueles que melhor s„o representados 
+Ôªø#Projeto
+O objetivo do trabalho √© a utiliza√ß√£o da √Ålgebra Linear para a solu√ß√£o de um problema pr√°tico.
+Para isso, contruimos uma aplica√ß√£o que √© capaz de realizar uma consulta numa base de dados de documentos e assim retornar aqueles que melhor s√£o representados 
 pelos termos consultados.
 
 #Desenvolvimento
-O projeto foi desenvolvido na linguagem [Python 2.7](http://www.python.org/download/releases/2.7.5/) e faz uso tambÈm da biblioteca 
-[PyGTK](http://www.pygtk.org/) para a construÁ„o da interface. A base de dados dos documentos aqui apresentada foi construÌda com auxÌlio de um script 
-em PHP e apresenta abstracts de artigos disponÌveis em [IEEE](http://ieeexplore.ieee.org/Xplore/home.jsp).
+O projeto foi desenvolvido na linguagem [Python 2.7](http://www.python.org/download/releases/2.7.5/) e faz uso tamb√©m da biblioteca 
+[PyGTK](http://www.pygtk.org/) para a constru√ß√£o da interface. A base de dados dos documentos aqui apresentada foi constru√≠da com aux√≠lio de um script 
+em PHP e apresenta abstracts de artigos dispon√≠veis em [IEEE](http://ieeexplore.ieee.org/Xplore/home.jsp).
 
-#IntroduÁ„o
+#Introdu√ß√£o
 O projeto se dividiu em quatro etapas principais:
 
 1. Busca de documentos
@@ -17,9 +17,9 @@ O projeto se dividiu em quatro etapas principais:
 4. Consulta sobre a matriz de dados
 
 #Busca dos documentos
-Para se criar uma base de dados, utilizamos um script PHP. Com ele foi possÌvel capturar informaÁıes de artigos (em [IEEE](http://ieeexplore.ieee.org/Xplore/home.jsp)),
-como tÌtulo e abstract.
-Esta base ent„o È construÌda num arquivo com a seguinte estrutura:
+Para se criar uma base de dados, utilizamos um script PHP. Com ele foi poss√≠vel capturar informa√ß√µes de artigos (em [IEEE](http://ieeexplore.ieee.org/Xplore/home.jsp)),
+como t√≠tulo e abstract.
+Esta base ent√£o √© constru√≠da num arquivo com a seguinte estrutura:
 
 ```
 IDENTIFICADOR_DO_ARTIGO_NO_SITE
@@ -53,63 +53,72 @@ Software defects which are detected by black box testing (called black-box defec
 ```
 
 #Tratamento dos documentos
-Para o desenvolvimento da aplicaÁ„o, È necess·rio tambÈm realizar um tratamento nos dados coletados. Isso inclui:
+Para o desenvolvimento da aplica√ß√£o, √© necess√°rio tamb√©m realizar um tratamento nos dados coletados. Isso inclui:
 
-1. SeparaÁ„o do texto em palavras (termos)
-2. ReduÁ„o das palavras ao seu radical (tÈcnica como [stemming](http://en.wikipedia.org/wiki/Stemming))
-3. RemoÁ„o de palavras que n„o agregam informaÁ„o ao texto, como artigos, preposiÁıes e advÈrbios.
+1. Separa√ß√£o do texto em palavras (termos)
+2. Redu√ß√£o das palavras ao seu radical (t√©cnica como [stemming](http://en.wikipedia.org/wiki/Stemming))
+3. Remo√ß√£o de palavras que n√£o agregam informa√ß√£o ao texto, como artigos, preposi√ß√µes e adv√©rbios.
 
-Quanto ‡ reduÁ„o, foi utilizada a biblioteca [stemming](https://bitbucket.org/mchaput/stemming) do Python. J· a identificaÁ„o das chamadas stop words foi 
+Quanto √† redu√ß√£o, foi utilizada a biblioteca [stemming](https://bitbucket.org/mchaput/stemming) do Python. J√° a identifica√ß√£o das chamadas stop words foi 
 baseada na [lista de Armand Brahaj](http://norm.al/2009/04/14/list-of-english-stop-words/).
 
 #Montagem da matriz de dados para consulta
-AtÈ este ponto, foram obtidos os documentos e tambÈm seus termos relevantes. A prÛxima etapa È relacionar como esses documentos e termos ser„o processados de 
-maneira que um usu·rio consiga, atravÈs de uma consulta, recuperar os documentos relacionados.
+At√© este ponto, foram obtidos os documentos e tamb√©m seus termos relevantes. A pr√≥xima etapa √© relacionar como esses documentos e termos ser√£o processados de 
+maneira que um usu√°rio consiga, atrav√©s de uma consulta, recuperar os documentos relacionados.
 
 ##Latent semantic analysis (LSA) / Latent semantic indexing (LSI)
-TÈcnica utilizada para analisar relacionamento entre conjuntos de documentos e seus termos. A partir destes relacionamentos, È possÌvel realizar consultas de 
-maneira a resgatar apenas os documentos similares ao critÈrio de busca. A primeira etapa consiste na montagem de uma matriz de termos por documentos e, 
-em seguida, na reduÁ„o dessa matriz de maneira a facilitar a an·lise.
+T√©cnica utilizada para analisar relacionamento entre conjuntos de documentos e seus termos. A partir destes relacionamentos, √© poss√≠vel realizar consultas de 
+maneira a resgatar apenas os documentos similares ao crit√©rio de busca. A primeira etapa consiste na montagem de uma matriz de termos por documentos e, 
+em seguida, na redu√ß√£o dessa matriz de maneira a facilitar a an√°lise.
 
 ###Matriz de termos e documentos
-O mÈtodo È iniciado construindo uma matriz de termos por documentos, *A*<sub>m x n</sub>, que identifica a ocorrencia de *m* termos distintos numa coleÁ„o 
+O m√©todo √© iniciado construindo uma matriz de termos por documentos, *A*<sub>m x n</sub>, que identifica a ocorrencia de *m* termos distintos numa cole√ß√£o 
 de *n* documentos.
 
-Cada termo È representado por uma linha (num total de *m* linhas) e cada documento, por uma coluna (num total de *n* colunas), sendo cada cÈlula da matriz *A*, 
+Cada termo √© representado por uma linha (num total de *m* linhas) e cada documento, por uma coluna (num total de *n* colunas), sendo cada c√©lula da matriz *A*, 
 *a<sub>i,j</sub>*, dada pelo produto do peso local do termo *l<sub>i,j</sub>* com o peso global do termo *g<sub>i</sub>*.
 
-O peso local, *l<sub>i,j</sub>*, nada mais È que a frequÍncia relativa de um termo *i* num documento *j*, enquanto o global descreve a freqÍncia relativa 
-de um termo *i* na coleÁ„o de documentos. Esses pesos podem ser calculados de diferentes maneiras, como por exemplo:
+O peso local, *l<sub>i,j</sub>*, nada mais √© que a frequ√™ncia relativa de um termo *i* num documento *j*, enquanto o global descreve a freq√™ncia relativa 
+de um termo *i* na cole√ß√£o de documentos. Esses pesos podem ser calculados de diferentes maneiras, como por exemplo:
 
-- *l<sub>i,j</sub>* = 1 se o termo *i* est· presente no documento *j*, 0 caso contr·rio
-- *l<sub>i,j</sub>* = *freq_term<sub>i,j</sub>* que È o total de ocorrÍncias do termo *i* no documento *j*
-- *l<sub>i,j</sub>* = *log<sub>2</sub> (freq_term<sub>i,j</sub> + 1)* que È o total de ocorrÍncias do termo *i* no documento *j*
+- *l<sub>i,j</sub>* = 1 se o termo *i* est√° presente no documento *j*, 0 caso contr√°rio
+- *l<sub>i,j</sub>* = *freq_term<sub>i,j</sub>* que √© o total de ocorr√™ncias do termo *i* no documento *j*
+- *l<sub>i,j</sub>* = *log<sub>2</sub> (freq_term<sub>i,j</sub> + 1)* que √© o total de ocorr√™ncias do termo *i* no documento *j*
 - *g<sub>i</sub>* = 1
-- *g<sub>i</sub>* = *global_freq_term<sub>i</sub> / doc_freq<sub>i</sub>* onde *global_freq_term<sub>i</sub>* È o total de ocorrÍncias do termo *i* 
-na coleÁ„o de documentos e *doc_freq<sub>i</sub>*, o total de documentos que apresentam o termo *i*.
+- *g<sub>i</sub>* = *global_freq_term<sub>i</sub> / doc_freq<sub>i</sub>* onde *global_freq_term<sub>i</sub>* √© o total de ocorr√™ncias do termo *i* 
+na cole√ß√£o de documentos e *doc_freq<sub>i</sub>*, o total de documentos que apresentam o termo *i*.
 - *g<sub>i</sub>* = *log<sub>2</sub> (n / (1 + doc_freq<sub>i</sub>))*
 
-### AplicaÁ„o do mÈtodo SVD para reduÁ„o da matriz
-ConstruÌda a matriz, o passo seguinte È determinar como os termos e documentos est„o relacionados. Para isso, utilizamos a DecomposiÁ„o em Valores Singulares 
-para encontrar uma matriz de menor dimens„o que ressalte as relaÁıes e permita uma melhor an·lise dos dados. A partir desta fatoraÁ„o, as informaÁıes 
-sem‚nticas mais relevantes s„o preservadas e o ruÌdo e outros artefatos indesej·veis no espaÁo original s„o reduzidos.
+### Aplica√ß√£o do m√©todo SVD para redu√ß√£o da matriz
+Constru√≠da a matriz, o passo seguinte √© determinar como os termos e documentos est√£o relacionados. Para isso, utilizamos a Decomposi√ß√£o em Valores Singulares 
+para encontrar uma matriz de menor dimens√£o que ressalte as rela√ß√µes e permita uma melhor an√°lise dos dados. A partir desta fatora√ß√£o, as informa√ß√µes 
+sem√¢nticas mais relevantes s√£o preservadas e o ru√≠do e outros artefatos indesej√°veis no espa√ßo original s√£o reduzidos.
 
-#### DecomposiÁ„o em Valores Singulares (SVD - Singular Value Decomposition)
-A DecomposiÁ„o em valores singulares de uma matriz *A* È uma fatoraÁ„o na forma *A = U . S . V<sup>T</sup>*, onde *U* È uma matriz quadrada *m x m*; 
-*S*, uma matriz diagonal com elementos n„o negativos, cujos elementos s„o denominados __valores singulares__ e *V<sup>T</sup>* (transposta de *V*) 
-È uma matriz *n x n*. As *m* colunas de *U* s„o chamadas de __vetores singulares esquerdos__ e as *n* colunas de V, __vetores singulares direitos__.
+#### Decomposi√ß√£o em Valores Singulares (SVD - Singular Value Decomposition)
+A Decomposi√ß√£o em valores singulares de uma matriz *A* √© uma fatora√ß√£o na forma *A = U . S . V<sup>T</sup>*, onde *U* √© uma matriz quadrada *m x m*; 
+*S*, uma matriz diagonal com elementos n√£o negativos, cujos elementos s√£o denominados __valores singulares__ e *V<sup>T</sup>* (transposta de *V*) 
+√© uma matriz *n x n*. As *m* colunas de *U* s√£o chamadas de __vetores singulares esquerdos__ e as *n* colunas de V, __vetores singulares direitos__.
 
-A relaÁ„o entre essas matrizes obtidas com a decomposiÁ„o e a matriz original È:
+A rela√ß√£o entre essas matrizes obtidas com a decomposi√ß√£o e a matriz original √©:
 
-- Os vetores singulares esquerdos de *A* s„o os auto vetores de *AA<sup>T</sup>*
-- Os vetores singulares direitos de *A* s„o os auto vetores de *A<sup>T</sup>A*
-- Os valores singulares n„o nulos de *A* s„o as raÌzes quadradas dos auto valores de ambas as matrizes *AA<sup>T</sup>* e *A<sup>T</sup>A*.
+- Os vetores singulares esquerdos de *A* s√£o os auto vetores de *AA<sup>T</sup>*
+- Os vetores singulares direitos de *A* s√£o os auto vetores de *A<sup>T</sup>A*
+- Os valores singulares n√£o nulos de *A* s√£o as ra√≠zes quadradas dos auto valores de ambas as matrizes *AA<sup>T</sup>* e *A<sup>T</sup>A*.
 
-### AproximaÁ„o da matriz original para uma de menor posto
-Algumas aplicaÁıes requerem a aproximaÁ„o da matriz *A* (de posto *r*) por uma *A'* (de posto *k*, com *k < r*). Nesse caso, È possÌvel demonstrar 
-que a matriz *A'* È dada por *A' = U . S' . V<sup>T</sup>* onde *S'* È a mesma matriz *S*, porÈm com apenas os *r* maiores valores singulares 
+### Aproxima√ß√£o da matriz original para uma de menor posto
+Algumas aplica√ß√µes requerem a aproxima√ß√£o da matriz *A* (de posto *r*) por uma *A'* (de posto *k*, com *k < r*). Nesse caso, √© poss√≠vel demonstrar 
+que a matriz *A'* √© dada por *A' = U . S' . V<sup>T</sup>* onde *S'* √© a mesma matriz *S*, por√©m com apenas os *r* maiores valores singulares 
 (__Teorema de Eckart-Young__).
 
 #Consulta sobre a matriz de dados
-A similaridade entre os termos e documentos È um fator de qu„o prÛximos cada um destes espaÁos est·, o que È tipicamente calculado como a funÁ„o do ‚ngulo
+A similaridade entre os termos e documentos √© um fator de qu√£o pr√≥ximos cada um destes espa√ßos est√°, o que √© tipicamente calculado como a fun√ß√£o do √¢ngulo
 entre cada um destes vetores.
+
+#Refer√™ncias
+- (Latent Semantic Analysis)[http://en.wikipedia.org/wiki/Latent_semantic_analysis]
+- (Latent Semantic Indexing)[http://en.wikipedia.org/wiki/Latent_semantic_indexing]
+- (Singular Value Decomposition)[http://en.wikipedia.org/wiki/Singular_Value_Decomposition]
+- (Singular Value Decomposition Tutorial)[http://www.ling.ohio-state.edu/~kbaker/pubs/Singular_Value_Decomposition_Tutorial.pdf]
+- (LingPipe)[http://alias-i.com/lingpipe/demos/tutorial/svd/read-me.html]
+- (QR)[http://people.maths.ox.ac.uk/wendland/teaching/mt201011/part3.pdf]
+- (Golub)[http://www.alterlab.org/teaching/BIOEN6670-1_2012/papers/Golub_1964.pdf]
