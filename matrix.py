@@ -65,6 +65,13 @@ class Matrix:
             raise ValueError('Invalid row')
         return Vector(self.__values[start_position : end_position], False)
         
+    def tolist(self):
+        array = list()
+        for i in xrange(self.rows()):
+            columns = self.__values[i * self.columns() : (i+1) * self.columns()]
+            array.append(columns)
+        return array
+        
     def __sub__(self, matrix):
         if (self.rows() != matrix.rows() or self.columns() != matrix.columns()):
             raise ValueError('Sub error')

@@ -145,6 +145,30 @@ class TestMatrix(unittest.TestCase):
         self.assertAlmostEqual(row_vector.get(0), 1.0, delta=0.000001)
         self.assertAlmostEqual(row_vector.get(1), -1.0, delta=0.000001)
 
+    def test_tolist(self):
+        matrix = Matrix([3, 8, 1, -1], 2, 2)
+        array = matrix.tolist()
+        self.assertEqual(len(array), 2)
+        self.assertEqual(len(array[0]), 2)
+        self.assertAlmostEqual(array[0][0], 3.0, delta=0.000001)
+        self.assertAlmostEqual(array[0][1], 8.0, delta=0.000001)
+        self.assertEqual(len(array[1]), 2)
+        self.assertAlmostEqual(array[1][0], 1.0, delta=0.000001)
+        self.assertAlmostEqual(array[1][1], -1.0, delta=0.000001)
+        
+        matrix2 = Matrix([3, 8, 1, -1, 4, 5], 3, 2)
+        array = matrix2.tolist()
+        self.assertEqual(len(array), 3)
+        self.assertEqual(len(array[0]), 2)
+        self.assertAlmostEqual(array[0][0], 3.0, delta=0.000001)
+        self.assertAlmostEqual(array[0][1], 8.0, delta=0.000001)
+        self.assertEqual(len(array[1]), 2)
+        self.assertAlmostEqual(array[1][0], 1.0, delta=0.000001)
+        self.assertAlmostEqual(array[1][1], -1.0, delta=0.000001)
+        self.assertEqual(len(array[2]), 2)
+        self.assertAlmostEqual(array[2][0], 4.0, delta=0.000001)
+        self.assertAlmostEqual(array[2][1], 5.0, delta=0.000001)
+        
 
 if __name__ == '__main__':
     unittest.main()
