@@ -3,7 +3,8 @@ pygtk.require('2.0')
 import gtk
 import gtk.glade
 from documents import *
-from svd import *
+from lsi import *
+from utils import *
 import properties
 
 class DocumentVO:
@@ -21,10 +22,12 @@ class Controller:
     
     def __init__(self, file_name):
         # inicia os documentos
+        Utils.debug('Criando matriz de documentos...')
         self.documents = Documents(file_name)
         
-        # calcula as matrizes U, S e V (matlab)
-        self.svd = SVD()
+        # calcula o latent semantic index
+        Utils.debug('Calculando indices...')
+        self.lsi = LSI(self.documents)
         
         # inicializa a lista de documentos
         self.reset()
@@ -38,30 +41,30 @@ class Controller:
         
     def search(self, text):
         # somente para debug
-        print 'QUERY'
-        print text
-        print 'ALL TERMS'
-        print self.documents.terms()
+        Utils.debug('QUERY')
+        Utils.debug(text)
+        Utils.debug('ALL TERMS')
+        Utils.debug(self.documents.terms())
         
         # inicia analise buscando os termos que estao sendo procurados
         terms = self.documents.find_terms(text)
-        print 'FOUND AT'
-        print terms        
+        Utils.debug('FOUND AT')
+        Utils.debug(terms)
         
         # calcula o vetor de consulta
-        query_vector = self.svd.get_query_vector(terms)
-        print 'QUERY_VECTOR'
-        print query_vector
+        query_vector = self.lsi.get_query_vector(terms)
+        Utils.debug('QUERY_VECTOR')
+        Utils.debug(query_vector)
         
         # score dos documentos para a consulta
-        doc_score = self.svd.calculate_score(query_vector, self.svd.v)
-        print 'DOC_SCORE'
-        print doc_score
+        doc_score = self.lsi.calculate_score(query_vector, self.lsi.v)
+        Utils.debug('DOC_SCORE')
+        Utils.debug(doc_score)
         
         # score dos termos para a consulta
-        term_score = self.svd.calculate_score(query_vector, self.svd.u)
-        print 'TERM_SCORE'
-        print term_score
+        term_score = self.lsi.calculate_score(query_vector, self.lsi.u)
+        Utils.debug('TERM_SCORE')
+        Utils.debug(term_score)
         
         # cria lista de documentos
         documents = self.documents.documents()
@@ -106,9 +109,6 @@ class MainWindowGTK:
         self.window = self.builder.get_object("main_window")
         if (self.window):
             self.window.connect("destroy", gtk.main_quit)
-            
-    def hello(self, widget):
-        print "HELLO"
             
     def __prepare_search_entry(self):
         '''
